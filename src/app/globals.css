@@ -33,6 +33,10 @@ h1 {
   -webkit-text-fill-color: transparent;
 }
 
+form {
+  font-family: var(--font-inter);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

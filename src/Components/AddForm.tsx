@@ -1,9 +1,9 @@
 import { Dispatch, FormEvent, SetStateAction } from "react";
 
 type addForm = {
-  setAdd: Dispatch<SetStateAction<boolean>>;
+  show: Dispatch<SetStateAction<boolean>>;
 };
-export default function AddForm({ setAdd }: addForm) {
+export default function AddForm({ show }: addForm) {
   const handleSubmit = (event: Event | FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(
@@ -12,7 +12,7 @@ export default function AddForm({ setAdd }: addForm) {
     let title = formData.get("title");
     let link = formData.get("link");
     console.log({ title, link });
-    setAdd(false);
+    show(false);
   };
   return (
     <form

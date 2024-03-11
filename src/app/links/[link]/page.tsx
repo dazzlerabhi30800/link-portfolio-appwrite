@@ -24,7 +24,7 @@ export default function LinkPage({ params: { link } }: params) {
           <FaPlus />
         </button>
       )}
-      {add && <AddForm setAdd={setAdd} />}
+      {add && <AddForm show={setAdd} />}
     </main>
   );
 }

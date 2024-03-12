@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { anton, inter } from "../../utils/fonts";
+import Wrapper from "./Wrapper";
 
 export const metadata: Metadata = {
   title: "Link Portfolio",
@@ -15,7 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${anton.variable} ${inter.variable}`}>{children}</body>
+      <body className={`${anton.variable} ${inter.variable}`}>
+        <Wrapper>{children}</Wrapper>
+      </body>
     </html>
   );
 }

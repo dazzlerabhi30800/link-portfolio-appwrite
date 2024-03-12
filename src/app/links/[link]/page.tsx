@@ -2,11 +2,8 @@
 import "../../globals.css";
 import { FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import AddForm from "@/Components/AddForm";
-import databases, {
-  collectionId,
-  databaseId,
-} from "../../../../utils/AppwriteConfig";
+import AddForm from "@/components/AddForm";
+import { linkContext, useLinkContext } from "../../../../utils/Store";
 
 interface params {
   params: {
@@ -14,13 +11,9 @@ interface params {
   };
 }
 export default function LinkPage({ params: { link } }: params) {
-  const showDocs = async () => {
-    const response = await databases.listDocuments(databaseId, collectionId);
-    // const data = await response;
-    console.log(response?.documents);
-  };
+  const { getDocs } = useLinkContext() as linkContext;
   useEffect(() => {
-    showDocs();
+    getDocs();
   }, []);
   const [add, setAdd] = useState<boolean>(false);
   return (
@@ -39,4 +32,7 @@ export default function LinkPage({ params: { link } }: params) {
       {add && <AddForm show={setAdd} />}
     </main>
   );
+}
+function showDocs() {
+  throw new Error("Function not implemented.");
 }

@@ -13,6 +13,9 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      backgroundColor: {
+        darkViolet: "#151727",
+      },
       keyframes: {
         bgChange: {
           "0%, 100%": { backgroundPosition: "0vh" },

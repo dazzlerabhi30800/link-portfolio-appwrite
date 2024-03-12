@@ -1,17 +1,21 @@
 import { Dispatch, FormEvent, SetStateAction } from "react";
+import { linkContext, useLinkContext } from "../../utils/Store";
 
 type addForm = {
   show: Dispatch<SetStateAction<boolean>>;
+  category: string;
 };
-export default function AddForm({ show }: addForm) {
-  const handleSubmit = (event: Event | FormEvent<HTMLFormElement>) => {
+export default function AddForm({ show, category }: addForm) {
+  const { addDocs } = useLinkContext() as linkContext;
+  const handleSubmit = async (event: Event | FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(
-      document.querySelector("form") as HTMLFormElement,
+      document.querySelector("form") as HTMLFormElement
     );
-    let title = formData.get("title");
-    let link = formData.get("link");
-    console.log({ title, link });
+    let title = formData.get("title")?.toString();
+    let link = formData.get("link")?.toString();
+    if (!title || !link || !category) return;
+    addDocs(title, link, category);
     show(false);
   };
   return (

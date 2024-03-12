@@ -1,5 +1,6 @@
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { linkContext, useLinkContext } from "../../utils/Store";
+import { FaTimes } from "react-icons/fa";
 
 type addForm = {
   show: Dispatch<SetStateAction<boolean>>;
@@ -10,7 +11,7 @@ export default function AddForm({ show, category }: addForm) {
   const handleSubmit = async (event: Event | FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(
-      document.querySelector("form") as HTMLFormElement
+      document.querySelector("form") as HTMLFormElement,
     );
     let title = formData.get("title")?.toString();
     let link = formData.get("link")?.toString();
@@ -23,6 +24,12 @@ export default function AddForm({ show, category }: addForm) {
       onSubmit={handleSubmit}
       className="flex flex-col gap-10 p-5 rounded-md shadow-md w-[95%] max-w-[350px] bg-neutral-900"
     >
+      <button
+        onClick={() => show(false)}
+        className="text-lg text-gray-400 hover:text-cyan-500 md:text-xl self-end"
+      >
+        <FaTimes />
+      </button>
       <div className="flex flex-col gap-2">
         <label htmlFor="title" className="md:text-lg">
           Title

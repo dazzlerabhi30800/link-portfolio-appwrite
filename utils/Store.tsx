@@ -11,8 +11,12 @@ import { ID, Models } from "appwrite";
 export type linkContext = {
   links: link[];
   loading: boolean;
+  showAlert: boolean;
+  alertMessage: string;
   setLinks: React.Dispatch<SetStateAction<link[]>>;
-  getDocs: () => Promise<void>;
+  setShowAlert: React.Dispatch<SetStateAction<boolean>>;
+  setAlertMessage: React.Dispatch<SetStateAction<string>>;
+  getDocs: (cat: string) => Promise<void>;
   addDocs: (title: string, link: string, category: string) => Promise<void>;
   deleteDoc: (id: string) => Promise<void>;
 };
@@ -25,9 +29,11 @@ export default function LinkContextProvider({
 }) {
   const [links, setLinks] = useState<link[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
 
   // functions
-  const getDocs = async () => {
+  const getDocs = async (cat: string) => {
     setLoading(true);
     if (!databaseId || !collectionId) return;
     const response = await databases.listDocuments(databaseId, collectionId);
@@ -39,7 +45,7 @@ export default function LinkContextProvider({
       link: link.link,
       id: link.$id,
     }));
-    setLinks(arr);
+    setLinks(arr.filter((arr) => arr.group === cat));
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -57,10 +63,11 @@ export default function LinkContextProvider({
       databaseId,
       collectionId,
       ID.unique(),
-      payload
+      payload,
     );
     if (!promise) return;
     getDocs();
+    handleAlert("link added", 3000);
   };
   const deleteDoc = async (id: string) => {
     if (!databaseId || !collectionId) return;
@@ -68,11 +75,32 @@ export default function LinkContextProvider({
     const delDoc = await databases.deleteDocument(databaseId, collectionId, id);
     if (!delDoc) return;
     getDocs();
+    handleAlert("link deleted", 3000);
+  };
+
+  const handleAlert = (text: string, time: number) => {
+    if (!text) return;
+    setShowAlert(true);
+    setAlertMessage(text);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, time ?? 4000);
   };
 
   return (
     <linkContext.Provider
-      value={{ links, loading, setLinks, getDocs, addDocs, deleteDoc }}
+      value={{
+        links,
+        loading,
+        showAlert,
+        setShowAlert,
+        alertMessage,
+        setAlertMessage,
+        setLinks,
+        getDocs,
+        addDocs,
+        deleteDoc,
+      }}
     >
       {children}
     </linkContext.Provider>

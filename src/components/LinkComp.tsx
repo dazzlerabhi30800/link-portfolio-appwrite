@@ -1,16 +1,21 @@
 import Link from "next/link";
-import { FaClipboard, FaTrash } from "react-icons/fa";
+import { FaClipboard, FaTrash, FaEdit } from "react-icons/fa";
 import { linkContext, useLinkContext } from "../../utils/Store";
 
-export default function LinkComp({ data, category }: { data: link, category: string }) {
-  const { title, link, id } = data;
-  const { deleteDoc, setShowAlert, setAlertMessage } =
+export default function LinkComp({
+  data,
+  category,
+}: {
+  data: link;
+  category: string;
+}) {
+  const { title, link, id, edit } = data;
+  const { deleteDoc, setShowAlert, setAlertMessage, editDoc } =
     useLinkContext() as linkContext;
   return (
     <div className="grid grid-cols-2 gap-3 justify-between p-5 text-lg md:text-xl border-2 border-cyan-500 rounded-lg text-wrap">
       <h2 className="font-semibold">{title}</h2>
-
-      <div className="place-self-end flex items-center gap-2">
+      <div className="place-self-end flex items-center gap-4">
         <button
           onClick={() => {
             setShowAlert(true);
@@ -29,6 +34,9 @@ export default function LinkComp({ data, category }: { data: link, category: str
           className="p-3 bg-rose-500 text-white text-xl rounded-md transition duration-200 shadow-md linear shadow-rose-500/50 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
         >
           <FaTrash />
+        </button>
+        <button onClick={() => editDoc(id, title, link)} className="p-3 bg-cyan-500 text-white text-xl rounded-md transition duration-200 shadow-md linear shadow-cyan-500/70 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
+          <FaEdit />
         </button>
       </div>
       <Link

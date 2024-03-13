@@ -6,22 +6,18 @@ type addForm = {
   category: string;
 };
 export default function AddForm({ category }: addForm) {
-  const { addDocs, setAdd } = useLinkContext() as linkContext;
-
+  const { addDocs, setAdd, changeId, formData, setFormData, completeEdit } =
+    useLinkContext() as linkContext;
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(
-      document.querySelector("form") as HTMLFormElement,
-    );
-    let title = formData.get("title")?.toString();
-    let link = formData.get("link")?.toString();
-    if (!title || !link || !category) return;
-    addDocs(title, link, category);
+    if (!formData.title || !formData.link || !category) return;
+    return changeId
+      ? completeEdit(category)
+      : addDocs(formData.title, formData.link, category);
   };
 
-
-
+  // console.log(formData.title);
   return (
     <form
       onSubmit={handleSubmit}
@@ -39,6 +35,8 @@ export default function AddForm({ category }: addForm) {
           Title
         </label>
         <input
+          value={formData.title}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           type="text"
           className="border border-sky-400 rounded-md py-2 px-4 bg-transparent text-white focus:outline-none focus:border-rose-400"
           name="title"
@@ -51,6 +49,8 @@ export default function AddForm({ category }: addForm) {
           Link URL
         </label>
         <input
+          value={formData.link}
+          onChange={(e) => setFormData({ ...formData, link: e.target.value })}
           type="text"
           className="border border-sky-400 rounded-md py-2 px-4 bg-transparent text-white focus:outline-none focus:border-rose-400"
           name="link"
@@ -62,7 +62,7 @@ export default function AddForm({ category }: addForm) {
         type="submit"
         className="py-2 px-6 shadow-lg bg-rose-500 transition ease-in-out duration-300 hover:bg-rose-700"
       >
-        Submit
+        {changeId ? "Update" : "Submit"}
       </button>
     </form>
   );

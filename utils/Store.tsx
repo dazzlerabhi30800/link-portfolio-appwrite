@@ -13,15 +13,21 @@ export type linkContext = {
   loading: boolean;
   showAlert: boolean;
   alertMessage: string;
-  add: boolean
+  add: boolean;
+  formData: formData;
   setLinks: React.Dispatch<SetStateAction<link[]>>;
+  changeId: string | null;
+  setFormData: React.Dispatch<SetStateAction<formData>>;
   setShowAlert: React.Dispatch<SetStateAction<boolean>>;
+  setChangeId: React.Dispatch<SetStateAction<string | null>>;
   setAdd: React.Dispatch<SetStateAction<boolean>>;
   setAlertMessage: React.Dispatch<SetStateAction<string>>;
   getDocs: (cat: string) => Promise<void>;
   addDocs: (title: string, link: string, category: string) => Promise<void>;
   deleteDoc: (id: string, cat: string) => Promise<void>;
   handleAlert: (text: string, time: number) => void;
+  editDoc: (id: string, title: string, link: string) => Promise<void>;
+  completeEdit: (cat: string) => Promise<void>;
 };
 const linkContext = createContext<linkContext | null>(null);
 
@@ -35,6 +41,11 @@ export default function LinkContextProvider({
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [add, setAdd] = useState<boolean>(false);
+  const [changeId, setChangeId] = useState<string | null>(null);
+  const [formData, setFormData] = useState<formData>({
+    title: "",
+    link: "",
+  });
 
   // functions
   const getDocs = async (cat?: string) => {
@@ -48,6 +59,7 @@ export default function LinkContextProvider({
       group: link.group,
       link: link.link,
       id: link.$id,
+      edit: false,
     }));
     setLinks(arr.filter((arr) => arr.group === cat));
     setTimeout(() => {
@@ -67,7 +79,7 @@ export default function LinkContextProvider({
       databaseId,
       collectionId,
       ID.unique(),
-      payload,
+      payload
     );
     if (!promise) return;
     getDocs(category);
@@ -78,6 +90,37 @@ export default function LinkContextProvider({
     if (!id) return;
     const delDoc = await databases.deleteDocument(databaseId, collectionId, id);
     if (!delDoc) return;
+    getDocs(cat);
+  };
+
+  const editDoc = async (id: string, title: string, link: string) => {
+    if (!id) return;
+    const payload = {
+      $id: id,
+      edit: true,
+    };
+    await databases.updateDocument(databaseId, collectionId, id, payload);
+    setChangeId(id);
+    setAdd(true);
+    setFormData({ title, link });
+    // getDocs();
+  };
+
+  const completeEdit = async (cat: string) => {
+    if (!changeId || !cat) return;
+    const payload = {
+      $id: changeId,
+      title: formData.title,
+      link: formData.link,
+    };
+    let updated = await databases.updateDocument(
+      databaseId,
+      collectionId,
+      changeId,
+      payload
+    );
+    if (!updated) return;
+    setAdd(false);
     getDocs(cat);
   };
 
@@ -108,6 +151,12 @@ export default function LinkContextProvider({
         addDocs,
         deleteDoc,
         handleAlert,
+        editDoc,
+        formData,
+        setFormData,
+        changeId,
+        setChangeId,
+        completeEdit,
       }}
     >
       {children}

@@ -1,3 +1,4 @@
+import { anton, inter } from "../../utils/fonts";
 
 export default function RootLayout({
     children,

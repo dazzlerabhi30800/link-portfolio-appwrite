@@ -23,7 +23,7 @@ const config: Config = {
         },
       },
       animation: {
-        bgchange: "bgChange 25s linear infinite",
+        bgchange: "bgChange 20s linear infinite",
       },
     },
   },

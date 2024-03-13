@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { linkContext, useLinkContext } from "../../utils/Store";
 import { FaTimes } from "react-icons/fa";
 
@@ -7,10 +7,6 @@ type addForm = {
 };
 export default function AddForm({ category }: addForm) {
   const { addDocs, setAdd } = useLinkContext() as linkContext;
-  // const [formData, setFormData] = useState({
-  //   title: "",
-  //   link: "",
-  // })
 
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {

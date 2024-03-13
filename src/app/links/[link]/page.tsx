@@ -6,7 +6,6 @@ import AddForm from "@/components/AddForm";
 import { linkContext, useLinkContext } from "../../../../utils/Store";
 import LinkComp from "@/components/LinkComp";
 import Spinner from "@/components/Spinner";
-import Alert from "@/components/Alert";
 import {
   client,
   collectionId,

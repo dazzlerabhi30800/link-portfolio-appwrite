@@ -39,7 +39,6 @@ export default function LinkPage({ params: { link } }: params) {
     );
     return () => {
       unsubscribe();
-      console.log("hello");
     };
   }, []);
 
@@ -51,7 +50,7 @@ export default function LinkPage({ params: { link } }: params) {
       </h1>
       {add && <AddForm category={link} />}
       {!add && (
-        <div className="flex flex-col gap-5 w-[95%] max-w-fit">
+        <div className="flex flex-col gap-5 w-[95%] md:min-w-[320px] max-w-fit">
           {links.length >= 1 ? (
             links.map((data: link) => <LinkComp key={data.id} category={link} data={data} />)
           ) : (

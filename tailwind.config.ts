@@ -18,8 +18,8 @@ const config: Config = {
       },
       keyframes: {
         bgChange: {
-          "0%, 100%": { backgroundPosition: "0vh" },
-          "50%": { backgroundPosition: "100vh" },
+          "0%": { backgroundPosition: "0vh" },
+          "100%": { backgroundPosition: "100vh" },
         },
       },
       animation: {

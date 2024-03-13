@@ -31,7 +31,7 @@ export default function LinkContextProvider({
   children: ReactNode;
 }) {
   const [links, setLinks] = useState<link[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [add, setAdd] = useState<boolean>(false);

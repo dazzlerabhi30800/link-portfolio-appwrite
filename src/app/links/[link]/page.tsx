@@ -19,7 +19,8 @@ interface params {
 }
 export default function LinkPage({ params: { link } }: params) {
   // States & variables
-  const { getDocs, links, loading, add, setAdd, handleAlert } = useLinkContext() as linkContext;
+  const { getDocs, links, loading, add, setAdd, handleAlert } =
+    useLinkContext() as linkContext;
 
   // useEffect Hook to fetch links
   useEffect(() => {
@@ -28,11 +29,26 @@ export default function LinkPage({ params: { link } }: params) {
     const unsubscribe = client.subscribe(
       `databases.${databaseId}.collections.${collectionId}.documents`,
       (response) => {
-        if (response.events.includes("databases.*.collections.*.documents.*.create")) {
-          handleAlert("Link Added", 4000);
+        let timeout;
+        if (
+          response.events.includes(
+            "databases.*.collections.*.documents.*.create",
+          )
+        ) {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => {
+            handleAlert("Link Added", 4000);
+          }, 2000);
         }
-        if (response.events.includes("databases.*.collections.*.documents.*.delete")) {
-          handleAlert("Link Deleted", 4000);
+        if (
+          response.events.includes(
+            "databases.*.collections.*.documents.*.delete",
+          )
+        ) {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => {
+            handleAlert("Link Deleted", 4000);
+          }, 2000);
         }
       },
     );
@@ -51,7 +67,9 @@ export default function LinkPage({ params: { link } }: params) {
       {!add && (
         <div className="flex flex-col gap-5 w-[95%] md:min-w-[320px] max-w-fit">
           {links.length >= 1 ? (
-            links.map((data: link) => <LinkComp key={data.id} category={link} data={data} />)
+            links.map((data: link) => (
+              <LinkComp key={data.id} category={link} data={data} />
+            ))
           ) : (
             <p className="text-rose-400 text-lg md:text-xl">
               No Links Available. Please Add one

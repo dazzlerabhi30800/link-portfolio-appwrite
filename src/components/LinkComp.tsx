@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FaClipboard, FaTrash } from "react-icons/fa";
 import { linkContext, useLinkContext } from "../../utils/Store";
 
-export default function LinkComp({ data }: { data: link }) {
+export default function LinkComp({ data, category }: { data: link, category: string }) {
   const { title, link, id } = data;
   const { deleteDoc, setShowAlert, setAlertMessage } =
     useLinkContext() as linkContext;
@@ -25,7 +25,7 @@ export default function LinkComp({ data }: { data: link }) {
           <FaClipboard />
         </button>
         <button
-          onClick={() => deleteDoc(id)}
+          onClick={() => deleteDoc(id, category)}
           className="p-3 bg-rose-500 text-white text-xl rounded-md transition duration-200 shadow-md linear shadow-rose-500/50 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
         >
           <FaTrash />

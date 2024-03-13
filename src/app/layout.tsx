@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { anton, inter } from "../../utils/fonts";
 import Wrapper from "./Wrapper";
+import Alert from "@/components/Alert";
 
 export const metadata: Metadata = {
   title: "Link Portfolio",

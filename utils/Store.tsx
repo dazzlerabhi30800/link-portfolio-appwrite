@@ -13,12 +13,15 @@ export type linkContext = {
   loading: boolean;
   showAlert: boolean;
   alertMessage: string;
+  add: boolean
   setLinks: React.Dispatch<SetStateAction<link[]>>;
   setShowAlert: React.Dispatch<SetStateAction<boolean>>;
+  setAdd: React.Dispatch<SetStateAction<boolean>>;
   setAlertMessage: React.Dispatch<SetStateAction<string>>;
   getDocs: (cat: string) => Promise<void>;
   addDocs: (title: string, link: string, category: string) => Promise<void>;
-  deleteDoc: (id: string) => Promise<void>;
+  deleteDoc: (id: string, cat: string) => Promise<void>;
+  handleAlert: (text: string, time: number) => void;
 };
 const linkContext = createContext<linkContext | null>(null);
 
@@ -31,9 +34,10 @@ export default function LinkContextProvider({
   const [loading, setLoading] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
+  const [add, setAdd] = useState<boolean>(false);
 
   // functions
-  const getDocs = async (cat: string) => {
+  const getDocs = async (cat?: string) => {
     setLoading(true);
     if (!databaseId || !collectionId) return;
     const response = await databases.listDocuments(databaseId, collectionId);
@@ -66,23 +70,24 @@ export default function LinkContextProvider({
       payload,
     );
     if (!promise) return;
-    getDocs();
-    handleAlert("link added", 3000);
+    getDocs(category);
+    setAdd(false);
   };
-  const deleteDoc = async (id: string) => {
+  const deleteDoc = async (id: string, cat: string) => {
     if (!databaseId || !collectionId) return;
     if (!id) return;
     const delDoc = await databases.deleteDocument(databaseId, collectionId, id);
     if (!delDoc) return;
-    getDocs();
-    handleAlert("link deleted", 3000);
+    getDocs(cat);
   };
 
   const handleAlert = (text: string, time: number) => {
+    let timeout;
+    clearTimeout(timeout);
     if (!text) return;
     setShowAlert(true);
     setAlertMessage(text);
-    setTimeout(() => {
+    timeout = setTimeout(() => {
       setShowAlert(false);
     }, time ?? 4000);
   };
@@ -93,6 +98,8 @@ export default function LinkContextProvider({
         links,
         loading,
         showAlert,
+        add,
+        setAdd,
         setShowAlert,
         alertMessage,
         setAlertMessage,
@@ -100,6 +107,7 @@ export default function LinkContextProvider({
         getDocs,
         addDocs,
         deleteDoc,
+        handleAlert,
       }}
     >
       {children}

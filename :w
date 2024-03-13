@@ -7,13 +7,13 @@ type addForm = {
 };
 export default function AddForm({ category }: addForm) {
   const { addDocs, setAdd } = useLinkContext() as linkContext;
-  // const [formData, setFormData] = useState({
-  //   title: "",
-  //   link: "",
-  // })
+  const [formData, setFormData] = useState({
+    title: "",
+    link: "",
+  })
 
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(
       document.querySelector("form") as HTMLFormElement,
@@ -25,14 +25,13 @@ export default function AddForm({ category }: addForm) {
   };
 
 
-
+  
   return (
     <form
       onSubmit={handleSubmit}
       className="flex flex-col gap-10 p-5 rounded-md shadow-md w-[95%] max-w-[350px] bg-neutral-900"
     >
       <button
-        type="button"
         onClick={() => setAdd(false)}
         className="text-lg text-gray-400 hover:text-cyan-500 md:text-xl self-end"
       >
@@ -71,3 +70,4 @@ export default function AddForm({ category }: addForm) {
     </form>
   );
 }
+

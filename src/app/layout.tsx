@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   title: "Link Portfolio",
   description:
     "Link Portfolio contains my important links made by Dazzler Abhi",
+  "icons": {
+    icon: "/favicon.ico"
+  }
+
 };
 
 export default function RootLayout({

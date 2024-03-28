@@ -64,7 +64,7 @@ export default function LinkContextProvider({
     setLinks(arr.filter((arr) => arr.group === cat));
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 100);
   };
 
   const addDocs = async (title: string, link: string, category: string) => {
@@ -79,7 +79,7 @@ export default function LinkContextProvider({
       databaseId,
       collectionId,
       ID.unique(),
-      payload
+      payload,
     );
     if (!promise) return;
     getDocs(category);
@@ -117,7 +117,7 @@ export default function LinkContextProvider({
       databaseId,
       collectionId,
       changeId,
-      payload
+      payload,
     );
     if (!updated) return;
     setAdd(false);

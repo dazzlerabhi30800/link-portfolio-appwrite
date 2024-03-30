@@ -6,8 +6,15 @@ type addForm = {
   category: string;
 };
 export default function AddForm({ category }: addForm) {
-  const { addDocs, setAdd, changeId, formData, setFormData, completeEdit } =
-    useLinkContext() as linkContext;
+  const {
+    addDocs,
+    setAdd,
+    add,
+    changeId,
+    formData,
+    setFormData,
+    completeEdit,
+  } = useLinkContext() as linkContext;
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,6 +43,7 @@ export default function AddForm({ category }: addForm) {
         </label>
         <input
           value={formData.title}
+          autoFocus={add}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           type="text"
           className="border border-sky-400 rounded-md py-2 px-4 bg-transparent text-white focus:outline-none focus:border-rose-400"

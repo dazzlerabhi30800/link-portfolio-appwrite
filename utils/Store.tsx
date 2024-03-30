@@ -84,6 +84,7 @@ export default function LinkContextProvider({
     if (!promise) return;
     getDocs(category);
     setAdd(false);
+    setFormData({ title: "", link: "" });
   };
   const deleteDoc = async (id: string, cat: string) => {
     if (!databaseId || !collectionId) return;

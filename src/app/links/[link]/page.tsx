@@ -30,6 +30,7 @@ export default function LinkPage({ params: { link } }: params) {
       `databases.${databaseId}.collections.${collectionId}.documents`,
       (response) => {
         let timeout;
+        let time = 600;
         if (
           response.events.includes(
             "databases.*.collections.*.documents.*.create",
@@ -37,8 +38,8 @@ export default function LinkPage({ params: { link } }: params) {
         ) {
           clearTimeout(timeout);
           timeout = setTimeout(() => {
-            handleAlert("Link Added", 4000);
-          }, 2000);
+            handleAlert("Link Added", 3000);
+          }, time);
         }
         if (
           response.events.includes(
@@ -47,8 +48,8 @@ export default function LinkPage({ params: { link } }: params) {
         ) {
           clearTimeout(timeout);
           timeout = setTimeout(() => {
-            handleAlert("Link Deleted", 4000);
-          }, 2000);
+            handleAlert("Link Deleted", 3000);
+          }, time);
         }
       },
     );
@@ -59,13 +60,13 @@ export default function LinkPage({ params: { link } }: params) {
 
   if (loading) return <Spinner />;
   return (
-    <main className="flex relative overflow-x-hidden flex-col gap-12 min-h-screen w-full items-center justify-center">
+    <main className="flex relative overflow-x-hidden flex-col gap-20 min-h-screen w-full items-center justify-center">
       <h1 className="text-4xl p-2 md:text-[2.9rem] font-medium uppercase text-cyan-30 bg-gradient-to-r from-purple-500 via-red-500 to-cyan-400 animate-bgchange">
         {link} Links
       </h1>
       {add && <AddForm category={link} />}
       {!add && (
-        <div className="flex flex-col gap-5 w-[95%] md:min-w-[320px] max-w-fit">
+        <div className="flex flex-wrap justify-center gap-14 w-[95%] md:min-w-[320px] max-w-fit">
           {links.length >= 1 ? (
             links.map((data: link) => (
               <LinkComp key={data.id} category={link} data={data} />
